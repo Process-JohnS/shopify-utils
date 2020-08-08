@@ -123,6 +123,9 @@ export class Cache {
 	}
 
 
+
+	/* Files */
+
 	_getOrCreateFile (fileName: string, overwrite: boolean, ext='json'): string {
 		let filePath = this._getFilePath(fileName);
 		filePath = !filePath ? path.resolve(this.cachePath, `${fileName}.${ext}`) : filePath;
@@ -136,9 +139,6 @@ export class Cache {
 		}
 		return filePath;
 	}
-
-
-	/* Files */
 
 	_getFilePath (targetFileName: string, suppressErrors=true): string {
 		const fileList = fs.readdirSync(this.cachePath);
