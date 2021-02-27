@@ -41,34 +41,40 @@ interface ICacheableJSON extends ICacheable {
 
 export class Cache {
 
-	cachePath: string;
-	parentCache?: Cache;
+	_cachePath: string;
+	_parentCache?: Cache;
 
 
 	constructor ({ cacheDir, overwrite, parentCache }: IRootCacheParams) {
-		this.parentCache = parentCache == undefined ? null : parentCache;
-		const parentCachePath = this.parentCache ? this.parentCache.getCachePath() : '';
-		this.cachePath = path.resolve(parentCachePath, cacheDir);
+		this._parentCache = parentCache == undefined ? null : parentCache;
+		const parentCachePath = this._parentCache ? this._parentCache.cachePath : '';
+		this._cachePath = path.resolve(parentCachePath, cacheDir);
 
 		/* If local cache exists remove if option enabled */
-		if (fs.existsSync(this.cachePath)) {
+		if (fs.existsSync(this._cachePath)) {
 			if (overwrite) {
-				fs.removeSync(this.cachePath);
-				fs.mkdirSync(this.cachePath);
+				fs.removeSync(this._cachePath);
+				fs.mkdirSync(this._cachePath);
 			}
 		}
 
 		/* If cache doesn't exist create it */
-		else fs.mkdirSync(this.cachePath);
+		else fs.mkdirSync(this._cachePath);
 	}
 
 
 
 	/* Cache Queries */
 
-	getCachePath(): string { return this.cachePath }
-	getCacheDir(): string { return path.basename(this.cachePath) }
-	getParentCache(): Cache { return this.parentCache }
+	get cachePath(): string {
+		return this._cachePath;
+	}
+	get cacheDir(): string {
+		return path.basename(this._cachePath);
+	}
+	get parentCache(): Cache {
+		return this._parentCache;
+	}
 
 
 
@@ -82,7 +88,7 @@ export class Cache {
 
 	*/
 
-	cacheCSV (cacheable: ICacheableCSV): Boolean {
+	public cacheCSV(cacheable: ICacheableCSV): Boolean {
 		const cacheFilePath = this.getOrCreateCSV(cacheable.name, cacheable.overwrite);
 		if (!cacheFilePath) return false;
 
@@ -128,23 +134,23 @@ export class Cache {
 
 	_getOrCreateFile (fileName: string, overwrite: boolean, ext='json'): string {
 		let filePath = this._getFilePath(fileName);
-		filePath = !filePath ? path.resolve(this.cachePath, `${fileName}.${ext}`) : filePath;
+		filePath = !filePath ? path.resolve(this._cachePath, `${fileName}.${ext}`) : filePath;
 
 		/* Create if file does not exist */
 		if (!fs.existsSync(filePath)) {
-			console.log(`Cache: Creating ${ext.toUpperCase()} file: ${this.getCacheDir()} > ${fileName}.${ext}`);
+			console.log(`Cache: Creating ${ext.toUpperCase()} file: ${this.cacheDir} > ${fileName}.${ext}`);
 			fs.writeFileSync(filePath, '');
 		} else {
-			console.log(`Cache: ${overwrite ? 'Overwriting' : 'Appending'} ${ext.toUpperCase()} file: ${this.getCacheDir()} > ${fileName}.${ext}`);
+			console.log(`Cache: ${overwrite ? 'Overwriting' : 'Appending'} ${ext.toUpperCase()} file: ${this.cacheDir} > ${fileName}.${ext}`);
 		}
 		return filePath;
 	}
 
 	_getFilePath (targetFileName: string, suppressErrors=true): string {
-		const fileList = fs.readdirSync(this.cachePath);
+		const fileList = fs.readdirSync(this._cachePath);
 
 		for (let fileName of fileList) {
-			const filePath = path.resolve(this.cachePath, fileName);
+			const filePath = path.resolve(this._cachePath, fileName);
 			const baseName = path.parse(filePath).name;
 			const extName = path.extname(filePath);
 
@@ -176,8 +182,8 @@ export class Cache {
 	*/
 
 	_getSubcache (subcacheDir: string): Cache {
-		const subcachePath = path.resolve(this.cachePath, subcacheDir);
-		if (!fs.existsSync(subcachePath)) throw Error(`Cache error: Subcache ${this.getCacheDir()} > ${subcacheDir} does not exist.`);
+		const subcachePath = path.resolve(this._cachePath, subcacheDir);
+		if (!fs.existsSync(subcachePath)) throw Error(`Cache error: Subcache ${this.cacheDir} > ${subcacheDir} does not exist.`);
 		return new Cache({
 			cacheDir: subcachePath,
 			overwrite: false,
@@ -195,12 +201,12 @@ export class Cache {
 	}
 
 	createSubcache ({ cacheDir: subcacheDir, overwrite }: ICacheParams): Cache {
-		let subcachePath = path.resolve(this.cachePath, subcacheDir);
+		let subcachePath = path.resolve(this._cachePath, subcacheDir);
 
 		if (!fs.existsSync(subcachePath)) {
-			console.log(`Cache: Creating ${this.getCacheDir()} > ${subcacheDir}.`);
+			console.log(`Cache: Creating ${this.cacheDir} > ${subcacheDir}.`);
 		} else {
-			console.log(`Cache: ${this.getCacheDir()} > ${subcacheDir} already exists.`);
+			console.log(`Cache: ${this.cacheDir} > ${subcacheDir} already exists.`);
 		}
 		
 		return new Cache({

@@ -48,16 +48,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/mysql2@types/mysql2":
-  version "1.0.0"
-  resolved "https://codeload.github.com/types/mysql2/tar.gz/d4ef3b2292f328049f7e4c545f6adab7d6a350a9"
-  dependencies:
-    "@types/mysql" types/mysql
-
-"@types/mysql@types/mysql":
-  version "2.0.0"
-  resolved "https://codeload.github.com/types/mysql/tar.gz/c26b1bc2bac17010081455e3127a90fb2eafcec9"
-
 "@types/node@*", "@types/node@^14.0.27":
   version "14.0.27"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.27.tgz#a151873af5a5e851b51b3b065c9e63390a9e0eb1"
@@ -186,11 +176,6 @@ http2-wrapper@^1.0.0-beta.5.0:
     quick-lru "^5.1.1"
     resolve-alpn "^1.0.0"
 
-humanize@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/humanize/-/humanize-0.0.9.tgz#1994ffaecdfe9c441ed2bdac7452b7bb4c9e41a4"
-  integrity sha1-GZT/rs3+nEQe0r2sdFK3u0yeQaQ=
-
 json-buffer@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/json-buffer/-/json-buffer-3.0.1.tgz#9338802a30d3b6605fbe0613e094008ca8c05a13"
@@ -236,11 +221,6 @@ mimic-response@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-3.1.0.tgz#2d1d59af9c1b129815accc2c46a022a5ce1fa3c9"
   integrity sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==
-
-node-mysql2@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/node-mysql2/-/node-mysql2-1.0.0.tgz#99d4aaf8309dc906e5652d25e242d4c3f7d5ffa6"
-  integrity sha512-qA/+9fRm97Ca54O6Lxt1LeyfyRGs/kXDqUulrFkqsLCrWFo0nLZk53nPE7/G3LvHO0nkFIFIMWOo0Vix3GRkyw==
 
 normalize-url@^4.1.0:
   version "4.5.0"
